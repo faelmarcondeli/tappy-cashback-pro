@@ -7,6 +7,14 @@ class Tappy_CB_Checkout {
 
     public function __construct() {
 
+        // Gera cashback quando o pedido é concluído
+        add_action(
+            'woocommerce_order_status_completed',
+            [$this, 'handle_order_completed'],
+            10,
+            1
+        );
+
         add_action(
             'woocommerce_cart_calculate_fees',
             [$this, 'apply_cashback'],
@@ -38,6 +46,17 @@ class Tappy_CB_Checkout {
         self::$balance_cache[$user_id] = $balance;
 
         return $balance;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | GERAÇÃO DE CASHBACK AO CONCLUIR PEDIDO
+    |--------------------------------------------------------------------------
+    */
+
+    public function handle_order_completed($order_id) {
+        $generator = new Tappy_CB_Generator();
+        $generator->generate($order_id);
     }
 
     /*
@@ -154,5 +173,4 @@ class Tappy_CB_Checkout {
 
         Tappy_CB_Database::clear_balance_cache($user_id);
     }
-}
 }

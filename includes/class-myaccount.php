@@ -24,29 +24,14 @@ class Tappy_CB_MyAccount {
         return $items;
     }
 
-    private function get_valid_cashback($user_id) {
-
-        $cashbacks = get_user_meta($user_id, '_tappy_cashbacks', true);
-        if (!is_array($cashbacks)) return [];
-
-        $valid = [];
-
-        foreach ($cashbacks as $cb) {
-
-            if (!empty($cb['expiration']) && strtotime($cb['expiration']) < time()) {
-                continue;
-            }
-
-            $valid[] = $cb;
-        }
-
-        return $valid;
+    private function get_cashbacks($user_id) {
+        return Tappy_CB_Database::get_history($user_id);
     }
 
     public function content() {
 
         $user_id = get_current_user_id();
-        $cashbacks = $this->get_valid_cashback($user_id);
+        $cashbacks = $this->get_cashbacks($user_id);
 
         echo '<h2>Meu Cashback</h2>';
 
@@ -60,22 +45,30 @@ class Tappy_CB_MyAccount {
             <tr>
                 <th>Pedido</th>
                 <th>Data</th>
-                <th>Total do Pedido</th>
-                <th>Total do Cashback</th>
+                <th>Valor</th>
+                <th>Usado</th>
+                <th>Status</th>
+                <th>Expira em</th>
                 <th>Ações</th>
             </tr>
         </thead><tbody>';
 
         foreach ($cashbacks as $cb) {
 
-            $order = wc_get_order($cb['order_id']);
+            $order = wc_get_order($cb->order_id);
             if (!$order) continue;
 
+            $expires = $cb->expires_at
+                ? wc_format_datetime(wc_string_to_datetime($cb->expires_at))
+                : '—';
+
             echo '<tr>';
-            echo '<td>#' . $cb['order_id'] . '</td>';
-            echo '<td>' . wc_format_datetime($order->get_date_created()) . '</td>';
-            echo '<td>' . wc_price($order->get_total()) . '</td>';
-            echo '<td>' . wc_price($cb['amount']) . '</td>';
+            echo '<td>#' . esc_html($cb->order_id) . '</td>';
+            echo '<td>' . esc_html(wc_format_datetime($order->get_date_created())) . '</td>';
+            echo '<td>' . wc_price($cb->amount) . '</td>';
+            echo '<td>' . wc_price($cb->amount_used) . '</td>';
+            echo '<td>' . esc_html($cb->status) . '</td>';
+            echo '<td>' . esc_html($expires) . '</td>';
             echo '<td><a class="woocommerce-button button view" href="' . esc_url($order->get_view_order_url()) . '">Visualizar</a></td>';
             echo '</tr>';
         }

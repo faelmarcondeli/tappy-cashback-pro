@@ -1,48 +1,46 @@
-# tappy-cashback-pro Wocommerce Requires at least: 6.0 Tested up to: 6.9 Requires PHP: 7.4+ Requires Wordpress 4.0+ Requires WooCommerce 4.0+ Utilizes Wordpress 6.9 Utilizes WooCommerce 10.6 Utilizes Wordpress Theme Flastome: 3.20.5 Utilizes Melhorias no e-mail do Woocommerce Utilizes Woocommerce Índices de pesquisa de texto completo do HPOS Utilizes Woocommerce Cache Product Objects Utilizes LitespeedCache 7.7 License: GPLv3 License URI: https://www.gnu.org/licenses/gpl-3.0.html
+# Tappy Cashback Pro
 
-O plugin gera cashback automaticamente quando pedidos são concluídos e permite que clientes utilizem o saldo diretamente no checkout.
+Plugin de cashback para WooCommerce que gera crédito quando o pedido é concluído e aplica o saldo automaticamente no checkout.
 
-Recursos:
+## Requisitos
+- WordPress 6.0+
+- WooCommerce 4.0+ (testado até 10.6)
+- PHP 7.4+
 
-✔ Geração automática de cashback
-✔ Definição de porcentagem global
-✔ Validade opcional do cashback
-✔ Aplicação automática no checkout
-✔ Controle antifraude (cancelamento em reembolso)
-✔ Histórico completo de cashback
-✔ Endpoint no My Account
-✔ Tabela própria no banco de dados
-✔ Compatível com HPOS
-✔ Otimizado para Redis / Object Cache
-✔ Sistema de expiração automática via cron
-✔ Interface administrativa com WP_List_Table
-✔ Controle de concorrência com lock de geração
-✔ Permite configurar tempo de verificação do hook cada 1 hora, 3 horas, 6 horas, 12 horas ou 24 horas
-✔ Permite definir o tempo de validade do cashback em dias
+## Recursos
+- Geração automática de cashback ao mudar o pedido para **Concluído**
+- Porcentagem global configurável
+- Validade opcional em dias
+- Aplicação automática do saldo no checkout
+- Antifraude: cancela cashback em pedidos reembolsados/cancelados
+- Histórico completo no **Minha Conta → Cashback**
+- Tabela dedicada no banco de dados (`wp_tappy_cashback`)
+- Compatível com HPOS
+- Otimizado para Redis/Object Cache (cache de saldo)
+- Expiração automática via cron com intervalo configurável (1h, 3h, 6h, 12h ou 24h)
+- Interface administrativa usando WP_List_Table
+- Controle de concorrência para evitar geração duplicada
 
+## Como funciona
+1. Cliente realiza um pedido.
+2. Ao mudar para **Concluído**, o plugin calcula o cashback com base na porcentagem configurada.
+3. O valor é salvo em `wp_tappy_cashback`, respeitando a validade (se definida).
+4. No próximo checkout, o saldo é aplicado automaticamente como desconto até o limite do pedido.
+5. Ao usar o saldo, os lançamentos são marcados como usados e o cache é limpo.
 
-Funcionamento do Cashback:
+## Configurações (WooCommerce → Configurações → Geral)
+- Habilitar Cashback
+- Porcentagem (%)
+- Validade (dias) — vazio para não expirar
+- Intervalo de verificação do cron (1h, 3h, 6h, 12h ou 24h)
 
-Cliente realiza um pedido.
-O pedido muda para Concluído.
-O plugin calcula o cashback.
-O valor é registrado na tabela wp_tappy_cashback.
-O saldo fica disponível para uso no checkout.
-Ao finalizar nova compra o cashback é consumido automaticamente.
+## Minha Conta
+- Endpoint: **/minha-conta/cashback**
+- Exibe pedido, data, valor, valor usado, status e expiração (quando houver).
 
-Interface Administrativa
+## Admin
+- Menu: WooCommerce → Cashback
+- Lista paginada com ID, usuário, pedido (link), valor, usado, status, expira em, criado em.
 
-Menu:
-WooCommerce → Cashback
-Tela construída com:
-WP_List_Table
-
-Mostra:
-ID
-Usuário
-Pedido
-Valor
-Valor usado
-Status
-Expiração
-Data de criação
+## Licença
+GPLv3 – https://www.gnu.org/licenses/gpl-3.0.html

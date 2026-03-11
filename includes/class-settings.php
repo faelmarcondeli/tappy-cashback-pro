@@ -43,6 +43,21 @@ class Tappy_CB_Settings {
             ),
 
             array(
+                'title'   => 'Intervalo de verificação',
+                'id'      => 'tappy_cashback_cron_interval',
+                'type'    => 'select',
+                'default' => 'daily',
+                'options' => array(
+                    'hourly'       => 'A cada 1 hora',
+                    'three_hours'  => 'A cada 3 horas',
+                    'six_hours'    => 'A cada 6 horas',
+                    'twelve_hours' => 'A cada 12 horas',
+                    'daily'        => 'A cada 24 horas'
+                ),
+                'desc'    => 'Define a frequência de varredura para expiração de cashback.'
+            ),
+
+            array(
                 'type' => 'sectionend',
                 'id'   => 'tappy_cashback_section'
             ),

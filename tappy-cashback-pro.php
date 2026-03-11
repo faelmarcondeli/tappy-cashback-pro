@@ -61,11 +61,35 @@ register_activation_hook(__FILE__, function () {
 
     Tappy_CB_Install::install();
 
+    // Disponibiliza os agendamentos personalizados durante a ativação
+    add_filter('cron_schedules', function ($schedules) {
+        $schedules['three_hours'] = array(
+            'interval' => 3 * HOUR_IN_SECONDS,
+            'display'  => 'A cada 3 horas'
+        );
+        $schedules['six_hours'] = array(
+            'interval' => 6 * HOUR_IN_SECONDS,
+            'display'  => 'A cada 6 horas'
+        );
+        $schedules['twelve_hours'] = array(
+            'interval' => 12 * HOUR_IN_SECONDS,
+            'display'  => 'A cada 12 horas'
+        );
+        return $schedules;
+    });
+
+    $interval = get_option('tappy_cashback_cron_interval', 'daily');
+    $allowed = ['hourly', 'three_hours', 'six_hours', 'twelve_hours', 'daily'];
+
+    if (!in_array($interval, $allowed, true)) {
+        $interval = 'daily';
+    }
+
     if (!wp_next_scheduled('tappy_cb_daily_expiration')) {
 
         wp_schedule_event(
             time(),
-            'daily',
+            $interval,
             'tappy_cb_daily_expiration'
         );
 

@@ -26,6 +26,7 @@ $wpdb->query("DROP TABLE IF EXISTS $table");
 delete_option('tappy_cashback_enabled');
 delete_option('tappy_cashback_percentage');
 delete_option('tappy_cashback_expiration');
+delete_option('tappy_cashback_cron_interval');
 
 
 /*

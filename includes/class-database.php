@@ -37,6 +37,20 @@ class Tappy_CB_Database {
         return $balance;
     }
 
+    public static function get_history($user_id) {
+        global $wpdb;
+        $table = self::table();
+
+        return $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM $table
+                 WHERE user_id = %d
+                 ORDER BY created_at DESC",
+                $user_id
+            )
+        );
+    }
+
     public static function clear_balance_cache($user_id) {
         wp_cache_delete('tappy_cb_balance_' . $user_id, 'tappy_cashback');
     }
