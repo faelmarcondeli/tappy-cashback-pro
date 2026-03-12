@@ -1,4 +1,4 @@
-# Tappy Cashback Pro
+# Tappy Cashback Pro (v1.0.1)
 
 Plugin de cashback para WooCommerce que gera crédito quando o pedido é concluído e aplica o saldo automaticamente no checkout.
 
@@ -41,6 +41,7 @@ Plugin de cashback para WooCommerce que gera crédito quando o pedido é conclu�
 ## Admin
 - Menu: WooCommerce → Cashback
 - Lista paginada com ID, usuário, pedido (link), valor, usado, status, expira em, criado em.
+- Mostra também o cashback previsto no carrinho e abaixo do total do pedido.
 
 ## Licença
 GPLv3 – https://www.gnu.org/licenses/gpl-3.0.html
