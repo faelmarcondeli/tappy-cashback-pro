@@ -177,8 +177,11 @@ class Tappy_CB_Checkout {
             return;
         }
 
-        // Usa valor bruto numérico para evitar formatação string do get_total().
+        // Usa valor bruto numérico; se zerar, faz fallback para subtotal.
         $order_total = floatval($cart->get_total('edit'));
+        if ($order_total <= 0) {
+            $order_total = floatval($cart->get_subtotal());
+        }
 
         if ($order_total <= 0) {
             return;
