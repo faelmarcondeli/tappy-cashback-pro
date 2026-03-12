@@ -126,7 +126,7 @@ class Tappy_CB_Checkout {
     |--------------------------------------------------------------------------
     */
 
-    public function add_future_cashback_row($cart_subtotal, $cart, $products_subtotal) {
+    public function add_future_cashback_row($cart_subtotal, $compound, $cart) {
 
         if (get_option('tappy_cashback_enabled') !== 'yes') {
             return $cart_subtotal;
@@ -135,6 +135,10 @@ class Tappy_CB_Checkout {
         $percentage = floatval(get_option('tappy_cashback_percentage'));
 
         if ($percentage <= 0) {
+            return $cart_subtotal;
+        }
+
+        if (!$cart || !is_object($cart)) {
             return $cart_subtotal;
         }
 
