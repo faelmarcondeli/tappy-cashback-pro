@@ -2,13 +2,13 @@
 /**
  * Plugin Name: Tappy Cashback Pro
  * Description: Sistema profissional de cashback para WooCommerce.
- * Version: 1.0.1
+ * Version: 1.1.0
  * Author: Rafael Moreno
  */
 
 if (!defined('ABSPATH')) exit;
 
-define('TAPPY_CB_VERSION', '1.0.1');
+define('TAPPY_CB_VERSION', '1.1.0');
 define('TAPPY_CB_PATH', plugin_dir_path(__FILE__));
 define('TAPPY_CB_URL', plugin_dir_url(__FILE__));
 
