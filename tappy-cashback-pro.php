@@ -61,7 +61,6 @@ register_activation_hook(__FILE__, function () {
 
     Tappy_CB_Install::install();
 
-    // Disponibiliza os agendamentos personalizados durante a ativação
     add_filter('cron_schedules', function ($schedules) {
         $schedules['three_hours'] = array(
             'interval' => 3 * HOUR_IN_SECONDS,
@@ -95,6 +94,7 @@ register_activation_hook(__FILE__, function () {
 
     }
 
+    add_rewrite_endpoint('cashback', EP_ROOT | EP_PAGES);
     flush_rewrite_rules();
 
 });
