@@ -172,8 +172,13 @@ class Tappy_CB_Checkout {
             return;
         }
 
-        $totals = WC()->cart ? WC()->cart->get_totals() : null;
-        $order_total = $totals['total'] ?? 0;
+        $cart = WC()->cart;
+        if (!$cart) {
+            return;
+        }
+
+        // Usa valor bruto numérico para evitar formatação string do get_total().
+        $order_total = floatval($cart->get_total('edit'));
 
         if ($order_total <= 0) {
             return;

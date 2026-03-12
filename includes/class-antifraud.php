@@ -13,6 +13,14 @@ class Tappy_CB_Antifraud {
         global $wpdb;
         $table = $wpdb->prefix . 'tappy_cashback';
 
+        // Identifica usuários afetados para limpar cache de saldo
+        $user_ids = $wpdb->get_col(
+            $wpdb->prepare(
+                "SELECT DISTINCT user_id FROM $table WHERE order_id = %d",
+                $order_id
+            )
+        );
+
         $wpdb->update(
             $table,
             [
@@ -21,5 +29,9 @@ class Tappy_CB_Antifraud {
             ],
             ['order_id' => $order_id]
         );
+
+        foreach ($user_ids as $user_id) {
+            Tappy_CB_Database::clear_balance_cache($user_id);
+        }
     }
 }
