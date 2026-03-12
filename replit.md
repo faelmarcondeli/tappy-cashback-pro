@@ -27,7 +27,7 @@ This is a **WordPress plugin**, not a standalone application. It runs inside a f
 │   ├── wp-content/
 │   │   ├── database/           ← SQLite database files (wordpress.db)
 │   │   ├── plugins/
-│   │   │   ├── tappy-cashback-pro/   ← Plugin copy (synced from root)
+│   │   │   ├── tappy-cashback-pro/   ← Plugin copy (from root)
 │   │   │   ├── woocommerce/          ← WooCommerce plugin
 │   │   │   └── sqlite-database-integration/  ← SQLite adapter
 │   │   └── themes/
@@ -72,9 +72,22 @@ WooCommerce → Settings → General:
 
 ## Running
 
-The workflow "Start application" runs `bash start.sh` which starts the PHP built-in server serving the `wordpress/` directory on port 5000.
+The workflow "Start application" runs `bash start.sh` which:
+1. Updates WordPress siteurl/home options to match the current `$REPLIT_DEV_DOMAIN`
+2. Starts the PHP built-in server serving the `wordpress/` directory on port 5000
+
+## Plugin Deployment Note
+
+The plugin source files live at the repo root. A copy is placed at:
+`wordpress/wp-content/plugins/tappy-cashback-pro/`
+
+After editing plugin source files, run:
+```bash
+cp -r /home/runner/workspace/includes /home/runner/workspace/wordpress/wp-content/plugins/tappy-cashback-pro/
+cp /home/runner/workspace/tappy-cashback-pro.php /home/runner/workspace/wordpress/wp-content/plugins/tappy-cashback-pro/
+```
 
 ## Known Limitations
 
-- WooCommerce Action Scheduler has a SQL compatibility issue with SQLite (JOIN UPDATE syntax). This causes 500 errors on background queue processing but does not affect core functionality.
+- WooCommerce Action Scheduler has a SQL compatibility issue with SQLite (JOIN UPDATE syntax). This causes 500 errors on background queue processing (`/wp-admin/admin-ajax.php?action=as_async_request_queue_runner`) but does not affect core cashback functionality.
 - For production, a real MySQL/MariaDB database should be used.
